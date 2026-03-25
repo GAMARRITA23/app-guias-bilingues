@@ -480,7 +480,7 @@ function generarUuidLocal() {
 }
 
 
-const BUILD_LABEL = "Netlify 2026-03-21";
+const BUILD_LABEL = "Cloudflare 2026-03-25";
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "Admin2026!";
 
