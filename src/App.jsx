@@ -483,6 +483,12 @@ function generarUuidLocal() {
 const BUILD_LABEL = "Cloudflare 2026-03-25";
 const ADMIN_USERNAME = "admin";
 const ADMIN_PASSWORD = "Admin2026!";
+const ESTADOS_SEGUIMIENTO = [
+  { codigo: "pendiente_gestion", nombre: "Pendiente de gestión" },
+  { codigo: "en_gestion", nombre: "En gestión" },
+  { codigo: "gestion_realizada", nombre: "Gestión realizada" },
+  { codigo: "cerrado", nombre: "Caso cerrado" },
+];
 
 const SECTION_TITLE_STYLE = {
   fontSize: "18px",
@@ -1135,6 +1141,7 @@ function App() {
   const [filtroSeguimientoEstado, setFiltroSeguimientoEstado] = useState("");
   const [filtroSeguimientoUsuario, setFiltroSeguimientoUsuario] = useState("");
   const [tamizajeMapaSeleccionado, setTamizajeMapaSeleccionado] = useState(null);
+  const [borradoresSeguimiento, setBorradoresSeguimiento] = useState({});
   const [modoEdicion, setModoEdicion] = useState(false);
   const [atencionEditando, setAtencionEditando] = useState(null);
   const [paginaActiva, setPaginaActiva] = useState("home");
@@ -1608,6 +1615,39 @@ function App() {
     }));
   };
 
+  const obtenerBorradorSeguimiento = (item) => {
+    const actual = borradoresSeguimiento[item.uuid_local];
+    if (actual) {
+      return actual;
+    }
+
+    return {
+      estado: item.estado_seguimiento || "pendiente_gestion",
+      fecha: item.fecha_ultima_gestion
+        ? String(item.fecha_ultima_gestion).slice(0, 16)
+        : "",
+      observacion: item.observacion_seguimiento || "",
+    };
+  };
+
+  const actualizarBorradorSeguimiento = (uuidLocal, campo, valor) => {
+    setBorradoresSeguimiento((prev) => {
+      const actual = prev[uuidLocal] || {
+        estado: "pendiente_gestion",
+        fecha: "",
+        observacion: "",
+      };
+
+      return {
+        ...prev,
+        [uuidLocal]: {
+          ...actual,
+          [campo]: valor,
+        },
+      };
+    });
+  };
+
   const limpiarGestionRiesgo = () => {
     setRiesgoGestionSeleccionado("");
     setRespuestasGestionRiesgo({});
@@ -1622,6 +1662,47 @@ function App() {
     setLongitudGestion("");
     setPrecisionGestionGps("");
     setFechaGestionGps("");
+  };
+
+  const guardarGestionSeguimiento = async (item, cambiosForzados = null) => {
+    try {
+      const borrador = cambiosForzados || obtenerBorradorSeguimiento(item);
+      const fechaGestionFinal =
+        borrador.fecha || (borrador.estado !== "pendiente_gestion" ? new Date().toISOString().slice(0, 16) : "");
+
+      await db.gestion_riesgo_tamizajes.update(item.id, {
+        estado_seguimiento: borrador.estado,
+        fecha_ultima_gestion: fechaGestionFinal ? new Date(fechaGestionFinal).toISOString() : null,
+        observacion_seguimiento: borrador.observacion || "",
+        sincronizado: 0,
+        estado_sync: "pendiente",
+        fecha_sincronizacion: null,
+        mensaje_error_sync: null,
+      });
+
+      setBorradoresSeguimiento((prev) => ({
+        ...prev,
+        [item.uuid_local]: {
+          estado: borrador.estado,
+          fecha: fechaGestionFinal,
+          observacion: borrador.observacion || "",
+        },
+      }));
+
+      await cargarTamizajesGestionRiesgo();
+      alert("Seguimiento actualizado correctamente.");
+    } catch (error) {
+      console.error("Error actualizando seguimiento del tamizaje:", error);
+      alert(`No fue posible actualizar el seguimiento: ${error?.message || error}`);
+    }
+  };
+
+  const marcarGestionRealizada = async (item) => {
+    await guardarGestionSeguimiento(item, {
+      estado: "gestion_realizada",
+      fecha: new Date().toISOString().slice(0, 16),
+      observacion: obtenerBorradorSeguimiento(item).observacion || "",
+    });
   };
 
   const usuariosFiltradosLocales = busquedaUsuario.trim()
@@ -2088,6 +2169,9 @@ const payloadAtencion = {
           precision_gps: tamizaje.precision_gps || null,
           fecha_gps: tamizaje.fecha_gps || null,
           ubicacion_capturada: Number(tamizaje.ubicacion_capturada || 0),
+          estado_seguimiento: tamizaje.estado_seguimiento || "pendiente_gestion",
+          fecha_ultima_gestion: tamizaje.fecha_ultima_gestion || null,
+          observacion_seguimiento: tamizaje.observacion_seguimiento || null,
           observaciones: tamizaje.observaciones || null,
           fecha_tamizaje: tamizaje.fecha_tamizaje,
         };
@@ -2230,6 +2314,9 @@ const payloadAtencion = {
         precision_gps: precisionGestionGps || null,
         fecha_gps: fechaGestionGps || null,
         ubicacion_capturada: latitudGestion && longitudGestion ? 1 : 0,
+        estado_seguimiento: "pendiente_gestion",
+        fecha_ultima_gestion: null,
+        observacion_seguimiento: "",
         observaciones: datosGestionRiesgo.observaciones || "",
         fecha_tamizaje: new Date().toISOString(),
         sincronizado: 0,
@@ -3909,18 +3996,21 @@ const payloadAtencion = {
                 <div style={INFO_TEXT_STYLE}>No hay resultados con los filtros aplicados.</div>
               ) : (
                 <ul style={SIMPLE_LIST_STYLE}>
-                  {tamizajesSeguimientoFiltrados.map((item) => (
-                    <li
-                      key={item.uuid_local}
-                      style={{
-                        padding: "14px",
-                        borderRadius: "16px",
-                        border: "1px solid #dbe4f0",
-                        background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
-                        boxShadow: "0 8px 18px rgba(15,23,42,0.06)",
-                      }}
-                    >
-                      <div style={{ display: "grid", gap: "8px" }}>
+                  {tamizajesSeguimientoFiltrados.map((item) => {
+                    const borrador = obtenerBorradorSeguimiento(item);
+
+                    return (
+                      <li
+                        key={item.uuid_local}
+                        style={{
+                          padding: "14px",
+                          borderRadius: "16px",
+                          border: "1px solid #dbe4f0",
+                          background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
+                          boxShadow: "0 8px 18px rgba(15,23,42,0.06)",
+                        }}
+                      >
+                        <div style={{ display: "grid", gap: "8px" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "10px" }}>
                           <div>
                             <div style={{ fontSize: "15px", fontWeight: "bold", color: "#0f172a" }}>
@@ -3963,6 +4053,20 @@ const payloadAtencion = {
                           </div>
                         </div>
 
+                        <div>
+                          <div style={MUTED_LABEL_STYLE}>Estado del seguimiento</div>
+                          <div style={VALUE_TEXT_STYLE}>
+                            {ESTADOS_SEGUIMIENTO.find((estado) => estado.codigo === (item.estado_seguimiento || "pendiente_gestion"))?.nombre || "Pendiente de gestión"}
+                          </div>
+                        </div>
+
+                        {item.fecha_ultima_gestion && (
+                          <div>
+                            <div style={MUTED_LABEL_STYLE}>Última gestión</div>
+                            <div style={VALUE_TEXT_STYLE}>{new Date(item.fecha_ultima_gestion).toLocaleString()}</div>
+                          </div>
+                        )}
+
                         {Number(item.ubicacion_capturada) === 1 && item.latitud && item.longitud && (
                           <div>
                             <div style={MUTED_LABEL_STYLE}>Ubicación</div>
@@ -3983,6 +4087,13 @@ const payloadAtencion = {
                           <div>
                             <div style={MUTED_LABEL_STYLE}>Observaciones</div>
                             <div style={VALUE_TEXT_STYLE}>{item.observaciones}</div>
+                          </div>
+                        )}
+
+                        {item.observacion_seguimiento && (
+                          <div>
+                            <div style={MUTED_LABEL_STYLE}>Observación de seguimiento</div>
+                            <div style={VALUE_TEXT_STYLE}>{item.observacion_seguimiento}</div>
                           </div>
                         )}
 
@@ -4010,9 +4121,84 @@ const payloadAtencion = {
                             <div style={{ ...VALUE_TEXT_STYLE, color: "#991b1b" }}>{item.mensaje_error_sync}</div>
                           </div>
                         )}
+
+                        <div
+                          style={{
+                            ...SOFT_PANEL_STYLE,
+                            display: "grid",
+                            gap: "10px",
+                            marginTop: "4px",
+                            background: "linear-gradient(180deg, #fbfdff 0%, #f3f7fb 100%)",
+                          }}
+                        >
+                          <div style={{ ...MUTED_LABEL_STYLE, color: "#1d4ed8" }}>Gestión del caso</div>
+
+                          <label style={FIELD_LABEL_STYLE}>
+                            Estado del caso
+                            <select
+                              value={borrador.estado}
+                              onChange={(e) => actualizarBorradorSeguimiento(item.uuid_local, "estado", e.target.value)}
+                              style={WHITE_INPUT_STYLE}
+                            >
+                              {ESTADOS_SEGUIMIENTO.map((estado) => (
+                                <option key={`${item.uuid_local}-${estado.codigo}`} value={estado.codigo}>
+                                  {estado.nombre}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
+
+                          <label style={FIELD_LABEL_STYLE}>
+                            Fecha de gestión
+                            <input
+                              type="datetime-local"
+                              value={borrador.fecha}
+                              onChange={(e) => actualizarBorradorSeguimiento(item.uuid_local, "fecha", e.target.value)}
+                              style={WHITE_INPUT_STYLE}
+                            />
+                          </label>
+
+                          <label style={FIELD_LABEL_STYLE}>
+                            Observación de seguimiento
+                            <textarea
+                              value={borrador.observacion}
+                              onChange={(e) => actualizarBorradorSeguimiento(item.uuid_local, "observacion", e.target.value)}
+                              rows={3}
+                              placeholder="Registra contacto realizado, remisión, hallazgos o cierre del caso."
+                              style={{ ...WHITE_INPUT_STYLE, resize: "vertical", minHeight: "88px" }}
+                            />
+                          </label>
+
+                          <div style={{ display: "grid", gap: "8px" }}>
+                            <button
+                              type="button"
+                              onClick={() => guardarGestionSeguimiento(item)}
+                              style={{
+                                ...PRIMARY_BUTTON_STYLE,
+                                minHeight: "44px",
+                                background: "linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%)",
+                                boxShadow: "0 10px 18px rgba(37,99,235,0.20)",
+                              }}
+                            >
+                              Guardar seguimiento
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => marcarGestionRealizada(item)}
+                              style={{
+                                ...SUCCESS_BUTTON_STYLE,
+                                minHeight: "44px",
+                                boxShadow: "0 10px 18px rgba(22,163,74,0.18)",
+                              }}
+                            >
+                              Marcar gestión realizada
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               )}
 
@@ -4196,7 +4382,7 @@ const payloadAtencion = {
                               .slice(0, 5)
                               .map((item) => (
                                 <div key={`admin-positivo-${item.uuid_local}`} style={VALUE_TEXT_STYLE}>
-                                  {item.nombre_usuario || item.identificacion_usuario} · {item.riesgo_nombre}
+                                  {item.nombre_usuario || item.identificacion_usuario} · {item.riesgo_nombre} · {ESTADOS_SEGUIMIENTO.find((estado) => estado.codigo === (item.estado_seguimiento || "pendiente_gestion"))?.nombre || "Pendiente de gestión"}
                                 </div>
                               ))
                           )}
@@ -4212,9 +4398,17 @@ const payloadAtencion = {
                             <div style={{ fontSize: "12px", color: "#475569", marginTop: "4px" }}>
                               {item.riesgo_nombre} · {item.clasificacion || "Sin clasificación"}
                             </div>
+                            <div style={{ fontSize: "12px", color: "#1d4ed8", marginTop: "6px", fontWeight: "bold" }}>
+                              Estado de gestión: {ESTADOS_SEGUIMIENTO.find((estado) => estado.codigo === (item.estado_seguimiento || "pendiente_gestion"))?.nombre || "Pendiente de gestión"}
+                            </div>
                             <div style={{ fontSize: "12px", color: "#64748b", marginTop: "6px" }}>
                               {item.fecha_tamizaje ? new Date(item.fecha_tamizaje).toLocaleString() : "Sin fecha"}
                             </div>
+                            {item.fecha_ultima_gestion && (
+                              <div style={{ fontSize: "12px", color: "#64748b", marginTop: "4px" }}>
+                                Última gestión: {new Date(item.fecha_ultima_gestion).toLocaleString()}
+                              </div>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -4306,7 +4500,7 @@ const payloadAtencion = {
                                 {adminTamizajeMapaActivo.riesgo_nombre} · {adminTamizajeMapaActivo.latitud}, {adminTamizajeMapaActivo.longitud}
                               </div>
                               <div style={INFO_TEXT_STYLE}>
-                                Estado: {Number(adminTamizajeMapaActivo.es_positivo) === 1 ? "Prioritario" : "En seguimiento"} · Puntos visibles: {adminTamizajesConUbicacion.length}
+                                Estado: {Number(adminTamizajeMapaActivo.es_positivo) === 1 ? "Prioritario" : "En seguimiento"} · Gestión: {ESTADOS_SEGUIMIENTO.find((estado) => estado.codigo === (adminTamizajeMapaActivo.estado_seguimiento || "pendiente_gestion"))?.nombre || "Pendiente de gestión"} · Puntos visibles: {adminTamizajesConUbicacion.length}
                               </div>
                             </div>
                           </>
