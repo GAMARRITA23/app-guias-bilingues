@@ -1,0 +1,17 @@
+{
+  "name": "Registro de Atención - Guías Bilingües",
+  "short_name": "Guías Bilingües",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f7f7",
+  "theme_color": "#2563eb",
+  "description": "Aplicación para registro de atención de guías bilingües.",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
