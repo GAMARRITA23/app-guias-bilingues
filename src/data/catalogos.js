@@ -31,17 +31,15 @@ export const riesgos = [
 ];
 
 export const guias = [
-  { identificacion: "1192901034", nombre: "CIRLIS RUBID DELUQUE FERNÁNDEZ" },
-  { identificacion: "1124383018", nombre: "MADELEINE DAMARIS MARQUEZ FERNANDEZ" },
+  { identificacion: "40953510", nombre: "YARIDZA SIJONA RIVEIRA" },
+  { identificacion: "77024633", nombre: "MANUEL MENGUAL GUTIERREZ" },
+  { identificacion: "1006578287", nombre: "LUZ PIMIENTA PUSHAINA" },
+  { identificacion: "1118834528", nombre: "MILEDIS AGUILAR URIANA" },
+  { identificacion: "1118854353", nombre: "JOSE URIANA IPUANA" },
+  { identificacion: "1124383018", nombre: "MADELEINE MARQUEZ FERNANDEZ" },
+  { identificacion: "1124406459", nombre: "PETRINA EPIAYU EPIAYU" },
   { identificacion: "1124413443", nombre: "FLORENTINA FERNANDEZ EPIEYU" },
-  { identificacion: "1118854353", nombre: "JOSE RICARDO URIANA IPUANA" },
-  { identificacion: "1006578287", nombre: "LUZ MERY PIMIENTA PUSHAINA" },
-  { identificacion: "40953510", nombre: "YARIDZA CRISTINA SIJONA RIVEIRA" },
-  { identificacion: "1124406459", nombre: "PETRINA ISABEL EPIAYU EPIAYU" },
-  { identificacion: "1118834528", nombre: "MILEDIS MARGARITA AGUILAR URIANA" },
-  { identificacion: "1124369101", nombre: "OLIMPO ZUÑIGA URIANA" },
-  { identificacion: "40954037", nombre: "ILSA ISABEL AGUILAR IPUANA" },
-  { identificacion: "40952047", nombre: "NOEMI MERCADO PUSHAINA" },
+  { identificacion: "1192901034", nombre: "CIRLIS DELUQUE FERNANDEZ" },
 ];
 
 export const catalogoCups = [

@@ -40,21 +40,26 @@ const riesgos = [
 ];
 
 const guias = [
-  { identificacion: "1192901034", nombre: "CIRLIS RUBID DELUQUE FERNÁNDEZ" },
-  { identificacion: "1124383018", nombre: "MADELEINE DAMARIS MARQUEZ FERNANDEZ" },
+  { identificacion: "40953510", nombre: "YARIDZA SIJONA RIVEIRA" },
+  { identificacion: "77024633", nombre: "MANUEL MENGUAL GUTIERREZ" },
+  { identificacion: "1006578287", nombre: "LUZ PIMIENTA PUSHAINA" },
+  { identificacion: "1118834528", nombre: "MILEDIS AGUILAR URIANA" },
+  { identificacion: "1118854353", nombre: "JOSE URIANA IPUANA" },
+  { identificacion: "1124383018", nombre: "MADELEINE MARQUEZ FERNANDEZ" },
+  { identificacion: "1124406459", nombre: "PETRINA EPIAYU EPIAYU" },
   { identificacion: "1124413443", nombre: "FLORENTINA FERNANDEZ EPIEYU" },
-  { identificacion: "1118854353", nombre: "JOSE RICARDO URIANA IPUANA" },
-  { identificacion: "1006578287", nombre: "LUZ MERY PIMIENTA PUSHAINA" },
-  { identificacion: "40953510", nombre: "YARIDZA CRISTINA SIJONA RIVEIRA" },
-  { identificacion: "1124406459", nombre: "PETRINA ISABEL EPIAYU EPIAYU" },
-  { identificacion: "1118834528", nombre: "MILEDIS MARGARITA AGUILAR URIANA" },
-  { identificacion: "1124369101", nombre: "OLIMPO ZUÑIGA URIANA" },
-  { identificacion: "40954037", nombre: "ILSA ISABEL AGUILAR IPUANA" },
-  { identificacion: "40952047", nombre: "NOEMI MERCADO PUSHAINA" },
+  { identificacion: "1192901034", nombre: "CIRLIS DELUQUE FERNANDEZ" },
 ];
 
 const EPS_CONTRATO_ANASWAYUU = "EPSI ANASWAYUU / Nota tecnica vigente";
 const EPS_CONTRATO_DUSAKAWI = "DUSAKAWI EPSI / Contrato 44560-160-DFI";
+const COORDINADORES_WHATSAPP = [
+  { nombre: "Coordinador 1", telefono: "573148029597" },
+  { nombre: "Coordinador 2", telefono: "573183799640" },
+  { nombre: "Coordinador 3", telefono: "573104540360" },
+  { nombre: "Coordinador 4", telefono: "573133053295" },
+  { nombre: "Coordinador 5", telefono: "573202860899" },
+];
 
 const catalogoCupsBaseAnaswayuu = [
   {
@@ -884,92 +889,123 @@ const riesgosGestion = [
   {
     id: "dnt",
     nombre: "DNT o riesgo de DNT en menores de 5 años",
-    descripcion: "Tamizaje comunitario con perímetro braquial y signos de alarma nutricional.",
+    descripcion: "Tamizaje comunitario para menores de 5 años con perímetro braquial y signos de alarma nutricional.",
     tipo: "dnt",
+    criterios: [
+      "Positivo si el perímetro braquial es menor de 11.5 cm.",
+      "Riesgo si el perímetro braquial está entre 11.5 cm y 12.4 cm.",
+      "También orienta captación si hay edema/palidez marcada o dos o más signos de alarma.",
+    ],
     preguntas: [
-      "¿Ha tenido pérdida visible de peso o delgadez marcada en las últimas semanas?",
-      "¿Ha presentado poco apetito o rechazo frecuente de alimentos?",
-      "¿Ha estado más decaído, somnoliento o con menos actividad de lo habitual?",
+      "¿Se observa pérdida visible de peso, delgadez marcada o enflaquecimiento reciente?",
+      "¿Ha presentado poco apetito, rechazo frecuente de alimentos o dificultad para alimentarse?",
+      "¿Se encuentra más decaído, somnoliento o menos activo de lo habitual?",
       "¿Ha tenido diarrea o vómito frecuente en los últimos días?",
-      "¿Tiene fiebre, tos persistente u otra infección reciente?",
-      "¿Se observan edema en pies, palidez marcada o cambios evidentes en piel y cabello?",
+      "¿Tiene fiebre, tos persistente u otra infección reciente que afecte su alimentación?",
+      "¿Se observan edema en ambos pies, palidez marcada o cambios evidentes en piel y cabello?",
     ],
   },
   {
     id: "hta",
     nombre: "Hipertensión",
-    descripcion: "Evaluación por tensión arterial y signos de alarma cardiovascular.",
+    descripcion: "Evaluación por tensión arterial, adherencia al tratamiento y signos de alarma cardiovascular.",
     tipo: "hta",
+    criterios: [
+      "Positivo si la presión arterial es igual o mayor a 140/90 mmHg.",
+      "También orienta captación si hay dolor torácico, falta de aire, visión borrosa o varios síntomas asociados.",
+    ],
     preguntas: [
-      "¿Ha presentado dolor de cabeza frecuente o intenso?",
-      "¿Ha sentido mareo o visión borrosa en los últimos días?",
-      "¿Ha tenido zumbido en los oídos o palpitaciones?",
-      "¿Ha presentado dolor en el pecho o sensación de presión?",
-      "¿Tiene antecedentes personales o familiares de hipertensión?",
-      "¿Ha suspendido o no toma regularmente medicamentos formulados para la presión?",
+      "¿Ha presentado dolor de cabeza frecuente o intenso en los últimos días?",
+      "¿Ha tenido mareo, visión borrosa o luces/centellos en la visión?",
+      "¿Ha sentido zumbido en los oídos, palpitaciones o sensación de latidos fuertes?",
+      "¿Ha presentado dolor en el pecho, presión en el pecho o falta de aire?",
+      "¿Tiene antecedente personal de hipertensión o le han dicho antes que la presión estaba alta?",
+      "¿Ha suspendido o no toma regularmente los medicamentos formulados para la presión?",
     ],
   },
   {
     id: "tb",
     nombre: "Tuberculosis",
-    descripcion: "Cuestionario por síntomas respiratorios y signos de alarma.",
+    descripcion: "Cuestionario por síntomas respiratorios persistentes, contacto epidemiológico y signos de alarma.",
     tipo: "cuestionario",
+    criterios: [
+      "Positivo si hay tos persistente por 14 días o más con al menos otro síntoma.",
+      "También orienta captación si hubo contacto con TB y síntomas respiratorios o constitucionales.",
+      "Hemoptisis, dolor al respirar o falta de aire elevan la prioridad.",
+    ],
     preguntas: [
-      "¿Tiene tos por más de 15 días?",
-      "¿Ha presentado fiebre, especialmente en las noches?",
+      "¿Tiene tos o carraspera persistente por 14 días o más?",
+      "¿Ha presentado fiebre, especialmente en la tarde o en la noche?",
       "¿Ha tenido sudoración nocturna abundante?",
-      "¿Ha perdido peso sin causa aparente?",
+      "¿Ha perdido peso o apetito sin causa aparente?",
       "¿Ha tenido contacto cercano con una persona diagnosticada con tuberculosis?",
-      "¿Ha presentado expectoración con sangre o dolor al respirar?",
+      "¿Ha presentado expectoración con sangre, dolor al respirar o falta de aire?",
     ],
   },
   {
     id: "dm",
     nombre: "Diabetes",
-    descripcion: "Tamizaje con signos y síntomas de alteración glicémica.",
+    descripcion: "Tamizaje con síntomas cardinales y manifestaciones frecuentes de alteración glicémica.",
     tipo: "cuestionario",
+    criterios: [
+      "Positivo si hay dos o más síntomas cardinales: poliuria, polidipsia o pérdida de peso.",
+      "También orienta captación si se combina un síntoma cardinal con otros signos o antecedentes.",
+    ],
     preguntas: [
       "¿Orina con mucha frecuencia durante el día o la noche?",
-      "¿Siente mucha sed de manera repetida?",
+      "¿Siente mucha sed de manera repetida o toma más agua de lo habitual?",
       "¿Ha perdido peso sin explicación reciente?",
-      "¿Siente cansancio o debilidad con frecuencia?",
+      "¿Siente cansancio, debilidad o sueño con frecuencia?",
       "¿Ha presentado visión borrosa o heridas que tardan en sanar?",
-      "¿Tiene antecedentes personales o familiares de diabetes?",
+      "¿Tiene antecedente personal de diabetes o un familiar cercano con diabetes?",
     ],
   },
   {
     id: "ira",
     nombre: "IRA",
-    descripcion: "Tamizaje con signos respiratorios de alarma.",
+    descripcion: "Tamizaje con signos respiratorios agudos y dificultad respiratoria.",
     tipo: "cuestionario",
+    criterios: [
+      "Positivo si hay dificultad respiratoria, tiraje o sonidos respiratorios anormales.",
+      "También orienta captación si fiebre y tos se asocian con deterioro general o dificultad para alimentarse.",
+    ],
     preguntas: [
       "¿Ha presentado tos reciente?",
       "¿Tiene fiebre o sensación febril?",
-      "¿Respira rápido o con dificultad?",
-      "¿Se le hunden las costillas o usa esfuerzo para respirar?",
+      "¿Respira rápido o con dificultad para respirar?",
+      "¿Se le hunden las costillas o hace esfuerzo para respirar?",
       "¿Tiene silbidos, quejido o sonidos anormales al respirar?",
-      "¿Se observa decaimiento marcado o dificultad para alimentarse?",
+      "¿Se observa decaimiento marcado, somnolencia o dificultad para alimentarse?",
     ],
   },
   {
     id: "eda",
     nombre: "EDA",
-    descripcion: "Tamizaje con signos digestivos y de deshidratación.",
+    descripcion: "Tamizaje con diarrea, vómito y signos comunitarios de deshidratación o complicación.",
     tipo: "cuestionario",
+    criterios: [
+      "Positivo si hay diarrea con vómito o signos de deshidratación.",
+      "Sangre en deposición o dolor abdominal fuerte elevan la prioridad.",
+    ],
     preguntas: [
       "¿Ha presentado diarrea en las últimas 24 a 72 horas?",
-      "¿Ha tenido vómito frecuente?",
-      "¿Tiene sed intensa o boca seca?",
-      "¿Ha orinado menos de lo habitual?",
-      "¿Se observa ojos hundidos o decaimiento marcado?",
+      "¿Ha tenido vómito frecuente o no retiene líquidos?",
+      "¿Tiene sed intensa, boca seca o llora sin lágrimas?",
+      "¿Ha orinado menos de lo habitual o el pañal permanece seco por más tiempo?",
+      "¿Se observan ojos hundidos, decaimiento marcado o irritabilidad inusual?",
       "¿Ha presentado sangre en la deposición o dolor abdominal fuerte?",
     ],
   },
   {
     id: "vectores",
     nombre: "Enfermedad por vectores",
-    descripcion: "Tamizaje comunitario por signos compatibles con dengue, malaria u otras ETV.",
+    descripcion: "Tamizaje comunitario por signos compatibles con dengue, malaria u otras enfermedades transmitidas por vectores.",
     tipo: "cuestionario",
+    criterios: [
+      "Positivo si hay fiebre con dos o más síntomas sistémicos asociados.",
+      "También orienta captación si hay fiebre, síntomas y exposición epidemiológica.",
+      "Sangrado o erupción con alarma aumentan la prioridad.",
+    ],
     preguntas: [
       "¿Ha presentado fiebre reciente?",
       "¿Tiene dolor de cabeza intenso o dolor detrás de los ojos?",
@@ -982,8 +1018,12 @@ const riesgosGestion = [
   {
     id: "mme",
     nombre: "Morbilidad materna extrema",
-    descripcion: "Tamizaje para gestantes o puérperas con signos de alarma materna.",
+    descripcion: "Tamizaje para gestantes o puérperas recientes con signos de alarma materna.",
     tipo: "cuestionario",
+    criterios: [
+      "Solo aplica si la usuaria está embarazada o en puerperio reciente.",
+      "Cualquier signo de alarma materna vuelve el tamizaje positivo y prioritario.",
+    ],
     preguntas: [
       "¿Está embarazada o tuvo parto/aborto en las últimas 6 semanas?",
       "¿Ha presentado sangrado vaginal abundante?",
@@ -1000,13 +1040,13 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
     return null;
   }
 
+  const respuestaActiva = (index) => !!respuestas[`${config.id}-${index}`];
   const totalPreguntas = config.preguntas.length;
   const respuestasPositivas = config.preguntas.reduce(
-    (total, _, index) => total + (respuestas[`${config.id}-${index}`] ? 1 : 0),
+    (total, _, index) => total + (respuestaActiva(index) ? 1 : 0),
     0
   );
   const porcentajePositivo = totalPreguntas > 0 ? respuestasPositivas / totalPreguntas : 0;
-  const superaUmbral = porcentajePositivo > 0.5;
 
   if (config.tipo === "dnt") {
     const edadMeses = Number(datosMedicion.edadMeses || 0);
@@ -1014,11 +1054,14 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
     const esMenorCinco = edadMeses > 0 && edadMeses < 60;
     const cumpleDnt = esMenorCinco && perimetroBraquial > 0 && perimetroBraquial < 11.5;
     const cumpleRiesgo = esMenorCinco && perimetroBraquial >= 11.5 && perimetroBraquial < 12.5;
+    const signosAlarma = [0, 1, 2, 3, 4].filter(respuestaActiva).length;
+    const signoCritico = respuestaActiva(5);
+    const tamizajePositivoPorSignos = esMenorCinco && (signoCritico || signosAlarma >= 2);
     const clasificacion = cumpleDnt
       ? "Probable DNT"
       : cumpleRiesgo
         ? "Probable riesgo de DNT"
-        : superaUmbral && esMenorCinco
+        : tamizajePositivoPorSignos
           ? "Tamizaje positivo por signos de alarma"
           : "Sin criterios suficientes en este tamizaje";
 
@@ -1026,7 +1069,7 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
       totalPreguntas,
       respuestasPositivas,
       porcentajePositivo,
-      esPositivo: cumpleDnt || cumpleRiesgo || (superaUmbral && esMenorCinco),
+      esPositivo: cumpleDnt || cumpleRiesgo || tamizajePositivoPorSignos,
       clasificacion,
       detalle:
         !esMenorCinco
@@ -1037,7 +1080,9 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
               ? "El perímetro braquial es menor de 11.5 cm."
               : cumpleRiesgo
                 ? "El perímetro braquial está entre 11.5 cm y 12.4 cm."
-                : "La clasificación se orienta por signos de alarma reportados.",
+                : signoCritico
+                  ? "Se identificaron signos clínicos de alarma nutricional."
+                  : "La clasificación se orienta por dos o más signos de alarma reportados.",
     };
   }
 
@@ -1045,20 +1090,152 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
     const sistolica = Number(datosMedicion.presionSistolica || 0);
     const diastolica = Number(datosMedicion.presionDiastolica || 0);
     const tensionElevada = sistolica >= 140 || diastolica >= 90;
+    const signosMayores = respuestaActiva(1) || respuestaActiva(3);
+    const signosMenores = [0, 2, 4, 5].filter(respuestaActiva).length;
+    const tamizajePositivoPorSignos = signosMayores || signosMenores >= 3;
 
     return {
       totalPreguntas,
       respuestasPositivas,
       porcentajePositivo,
-      esPositivo: tensionElevada || superaUmbral,
+      esPositivo: tensionElevada || tamizajePositivoPorSignos,
       clasificacion: tensionElevada
         ? "Probable hipertensión"
-        : superaUmbral
+        : tamizajePositivoPorSignos
           ? "Tamizaje positivo por signos de alarma"
           : "Sin criterios suficientes en este tamizaje",
       detalle: tensionElevada
         ? `Tensión arterial registrada: ${sistolica || "-"} / ${diastolica || "-"} mmHg.`
-        : "La clasificación se orienta por signos de alarma y antecedentes reportados.",
+        : signosMayores
+          ? "Se identificaron signos mayores compatibles con posible descompensación o alarma cardiovascular."
+          : "La clasificación se orienta por acumulación de signos, antecedentes y adherencia al tratamiento.",
+    };
+  }
+
+  if (config.id === "tb") {
+    const tosPersistente = respuestaActiva(0);
+    const contactoTb = respuestaActiva(4);
+    const signoMayor = respuestaActiva(5);
+    const sintomasAsociados = [1, 2, 3].filter(respuestaActiva).length;
+    const esPositivo = signoMayor || (tosPersistente && sintomasAsociados >= 1) || (contactoTb && (tosPersistente || sintomasAsociados >= 1));
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: esPositivo ? "Tamizaje positivo por sintomatico respiratorio" : "Sin criterios suficientes en este tamizaje",
+      detalle: signoMayor
+        ? "Se reportan signos respiratorios de alarma que ameritan priorización."
+        : esPositivo
+          ? "La clasificación se orienta por tos persistente, síntomas constitucionales o contacto epidemiológico."
+          : "No se reúnen criterios orientadores suficientes para sospecha comunitaria de tuberculosis.",
+    };
+  }
+
+  if (config.id === "dm") {
+    const sintomasCardinales = [0, 1, 2].filter(respuestaActiva).length;
+    const sintomasAsociados = [3, 4].filter(respuestaActiva).length;
+    const antecedente = respuestaActiva(5);
+    const esPositivo =
+      sintomasCardinales >= 2 ||
+      (sintomasCardinales >= 1 && sintomasAsociados >= 1) ||
+      (antecedente && sintomasCardinales >= 1);
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: esPositivo ? "Tamizaje positivo por alteracion glicemica probable" : "Sin criterios suficientes en este tamizaje",
+      detalle: esPositivo
+        ? "La clasificación se orienta por síntomas cardinales de hiperglucemia y antecedentes relevantes."
+        : "No se reúnen suficientes síntomas cardinales para una captación orientadora.",
+    };
+  }
+
+  if (config.id === "ira") {
+    const compromisoRespiratorio = respuestaActiva(2) || respuestaActiva(3) || respuestaActiva(4);
+    const sintomasBasicos = [0, 1].filter(respuestaActiva).length;
+    const signoGeneral = respuestaActiva(5);
+    const esPositivo = compromisoRespiratorio || (sintomasBasicos === 2 && signoGeneral);
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: esPositivo ? "Tamizaje positivo por signos respiratorios de alarma" : "Sin criterios suficientes en este tamizaje",
+      detalle: compromisoRespiratorio
+        ? "Se identifican signos respiratorios de compromiso o dificultad para respirar."
+        : esPositivo
+          ? "La clasificación se orienta por fiebre, tos y deterioro general asociado."
+          : "No se identifican signos respiratorios suficientes para priorización comunitaria.",
+    };
+  }
+
+  if (config.id === "eda") {
+    const tieneDiarrea = respuestaActiva(0);
+    const vomito = respuestaActiva(1);
+    const signosDeshidratacion = [2, 3, 4].filter(respuestaActiva).length;
+    const signoComplicacion = respuestaActiva(5);
+    const esPositivo = signoComplicacion || (tieneDiarrea && (signosDeshidratacion >= 1 || vomito));
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: esPositivo ? "Tamizaje positivo por diarrea o deshidratacion probable" : "Sin criterios suficientes en este tamizaje",
+      detalle: signoComplicacion
+        ? "Se reportan signos de complicación digestiva que ameritan priorización."
+        : esPositivo
+          ? "La clasificación se orienta por diarrea asociada con vómito o signos de deshidratación."
+          : "No se identifican suficientes signos para sospecha comunitaria de EDA con alarma.",
+    };
+  }
+
+  if (config.id === "vectores") {
+    const fiebre = respuestaActiva(0);
+    const sintomasAsociados = [1, 2, 3].filter(respuestaActiva).length;
+    const signoAlarma = respuestaActiva(4);
+    const exposicion = respuestaActiva(5);
+    const esPositivo = signoAlarma || (fiebre && sintomasAsociados >= 2) || (fiebre && sintomasAsociados >= 1 && exposicion);
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: esPositivo ? "Tamizaje positivo por enfermedad transmitida por vectores" : "Sin criterios suficientes en este tamizaje",
+      detalle: signoAlarma
+        ? "Se identifican signos de alarma compatibles con enfermedad transmitida por vectores."
+        : esPositivo
+          ? "La clasificación se orienta por fiebre asociada con síntomas sistémicos y contexto epidemiológico."
+          : "No se reúnen suficientes criterios orientadores para priorización por ETV.",
+    };
+  }
+
+  if (config.id === "mme") {
+    const aplicaTamizaje = respuestaActiva(0);
+    const signosAlarma = [1, 2, 3, 4, 5].filter(respuestaActiva).length;
+    const esPositivo = aplicaTamizaje && signosAlarma >= 1;
+
+    return {
+      totalPreguntas,
+      respuestasPositivas,
+      porcentajePositivo,
+      esPositivo,
+      clasificacion: !aplicaTamizaje
+        ? "No aplica para este usuario"
+        : esPositivo
+          ? "Tamizaje positivo por signos de alarma materna"
+          : "Sin criterios suficientes en este tamizaje",
+      detalle: !aplicaTamizaje
+        ? "Este tamizaje aplica solo para gestantes o puérperas recientes."
+        : esPositivo
+          ? "Se identificó al menos un signo de alarma materna que amerita priorización."
+          : "No se reportan signos de alarma materna en este momento.",
     };
   }
 
@@ -1066,11 +1243,11 @@ function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
     totalPreguntas,
     respuestasPositivas,
     porcentajePositivo,
-    esPositivo: superaUmbral,
-    clasificacion: superaUmbral
+    esPositivo: porcentajePositivo >= 0.5,
+    clasificacion: porcentajePositivo >= 0.5
       ? "Tamizaje positivo por signos de alarma"
       : "Sin criterios suficientes en este tamizaje",
-    detalle: "Resultado orientador basado en el cuestionario de signos de alarma.",
+    detalle: "Resultado orientador basado en la combinacion de signos de alarma reportados.",
   };
 }
 
@@ -1126,6 +1303,7 @@ function App() {
   const [confirmacionUsuario, setConfirmacionUsuario] = useState("");
   const [fecha, setFecha] = useState("");
   const [municipio, setMunicipio] = useState("");
+  const [comunidad, setComunidad] = useState("");
   const [riesgo, setRiesgo] = useState("");
   const [guia, setGuia] = useState("");
   const [cupsSeleccionado, setCupsSeleccionado] = useState("");
@@ -1167,7 +1345,9 @@ function App() {
   const [precisionGestionGps, setPrecisionGestionGps] = useState("");
   const [fechaGestionGps, setFechaGestionGps] = useState("");
   const [capturandoUbicacionGestion, setCapturandoUbicacionGestion] = useState(false);
+  const [comunidadGestion, setComunidadGestion] = useState("");
   const [riesgoGestionSeleccionado, setRiesgoGestionSeleccionado] = useState("");
+  const [tamizajeWhatsappPendiente, setTamizajeWhatsappPendiente] = useState(null);
   const [respuestasGestionRiesgo, setRespuestasGestionRiesgo] = useState({});
   const [datosGestionRiesgo, setDatosGestionRiesgo] = useState({
     edadMeses: "",
@@ -1577,6 +1757,7 @@ function App() {
     setLongitudGestion("");
     setPrecisionGestionGps("");
     setFechaGestionGps("");
+    setComunidadGestion("");
   }, [riesgoGestionSeleccionado]);
 
 
@@ -1613,6 +1794,58 @@ function App() {
       ...prev,
       [campo]: valor,
     }));
+  };
+
+  const formatearFechaWhatsApp = (fechaIso) => {
+    if (!fechaIso) return "No disponible";
+
+    return new Date(fechaIso).toLocaleString("es-CO", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const construirMensajeWhatsAppTamizaje = (tamizaje) => {
+    const lineas = [
+      "Alerta de gestion de riesgo",
+      `Usuario: ${tamizaje.nombre_usuario || "No registrado"}`,
+      `Identificacion: ${tamizaje.identificacion_usuario || "No registrada"}`,
+      `EPS: ${tamizaje.eps_usuario || "No registrada"}`,
+      `Comunidad: ${tamizaje.comunidad || "No registrada"}`,
+      `Riesgo: ${tamizaje.riesgo_nombre || "No registrado"}`,
+      `Clasificacion: ${tamizaje.clasificacion || "Sin clasificacion"}`,
+      `Resultado: ${tamizaje.detalle_resultado || "Sin detalle"}`,
+      `Fecha tamizaje: ${formatearFechaWhatsApp(tamizaje.fecha_tamizaje)}`,
+    ];
+
+    if (tamizaje.latitud && tamizaje.longitud) {
+      lineas.push(`Ubicacion: https://maps.google.com/?q=${tamizaje.latitud},${tamizaje.longitud}`);
+    }
+
+    if (tamizaje.observaciones) {
+      lineas.push(`Observaciones: ${tamizaje.observaciones}`);
+    }
+
+    return lineas.join("\n");
+  };
+
+  const abrirWhatsAppCoordinador = (coordinador, tamizaje) => {
+    const mensaje = construirMensajeWhatsAppTamizaje(tamizaje);
+    const enlace = `https://wa.me/${coordinador.telefono}?text=${encodeURIComponent(mensaje)}`;
+    window.open(enlace, "_blank", "noopener,noreferrer");
+  };
+
+  const copiarMensajeWhatsAppTamizaje = async (tamizaje) => {
+    try {
+      await navigator.clipboard.writeText(construirMensajeWhatsAppTamizaje(tamizaje));
+      alert("Mensaje copiado al portapapeles.");
+    } catch (error) {
+      console.error("No fue posible copiar el mensaje de WhatsApp:", error);
+      alert("No fue posible copiar el mensaje automáticamente.");
+    }
   };
 
   const obtenerBorradorSeguimiento = (item) => {
@@ -1662,6 +1895,7 @@ function App() {
     setLongitudGestion("");
     setPrecisionGestionGps("");
     setFechaGestionGps("");
+    setComunidadGestion("");
   };
 
   const guardarGestionSeguimiento = async (item, cambiosForzados = null) => {
@@ -1845,8 +2079,18 @@ function App() {
   const tamizajesSeguimientoConUbicacion = tamizajesSeguimientoFiltrados.filter(
     (item) => Number(item.ubicacion_capturada) === 1 && item.latitud && item.longitud
   );
-  const tamizajeMapaActivo = tamizajeMapaSeleccionado || tamizajesSeguimientoConUbicacion[0] || null;
-  const tamizajeMapaBounds = calcularMapaBounds(tamizajesSeguimientoConUbicacion);
+  const tamizajesUsuarioBuscadoConUbicacion = filtroSeguimientoUsuario.trim()
+    ? tamizajesSeguimientoConUbicacion.filter((item) =>
+        `${String(item.identificacion_usuario || "")} ${String(item.nombre_usuario || "")}`
+          .toLowerCase()
+          .includes(filtroSeguimientoUsuario.toLowerCase())
+      )
+    : [];
+  const tamizajeMapaActivo =
+    tamizajesUsuarioBuscadoConUbicacion.find((item) => item.uuid_local === tamizajeMapaSeleccionado?.uuid_local) ||
+    tamizajesUsuarioBuscadoConUbicacion[0] ||
+    null;
+  const tamizajeMapaBounds = calcularMapaBounds(tamizajesUsuarioBuscadoConUbicacion);
   const adminAtencionesConUbicacion = adminAtencionesRemotas.filter(
     (item) => Number(item.ubicacion_capturada) === 1 && item.latitud && item.longitud
   );
@@ -1927,6 +2171,7 @@ function App() {
     setConfirmacionUsuario(atencion.confirmacion_usuario || "");
     setFecha(atencion.fecha_atencion || "");
     setMunicipio(String(atencion.municipio_id || ""));
+    setComunidad(atencion.comunidad || "");
     setRiesgo(atencion.identificacion_riesgo || "");
     setGuia(atencion.identificacion_guia || "");
     setLatitud(atencion.latitud ? String(atencion.latitud) : "");
@@ -1945,6 +2190,7 @@ function App() {
     setConfirmacionUsuario("");
     setFecha("");
     setMunicipio("");
+    setComunidad("");
     setRiesgo("");
     setGuia("");
     setLatitud("");
@@ -1989,6 +2235,7 @@ function App() {
         confirmacion_usuario: confirmacionFinal,
         fecha_atencion: fecha,
         municipio_id: municipio,
+        comunidad: comunidad.trim() || null,
         identificacion_riesgo: riesgo,
         identificacion_guia: guiaObj.identificacion,
         nombre_guia: guiaObj.nombre,
@@ -2067,6 +2314,7 @@ const payloadAtencion = {
   confirmacion_usuario: atencion.confirmacion_usuario,
   fecha_atencion: atencion.fecha_atencion,
   municipio_id: Number(atencion.municipio_id),
+  comunidad: atencion.comunidad || null,
   identificacion_riesgo: atencion.identificacion_riesgo,
   identificacion_guia: atencion.identificacion_guia,
   nombre_guia: atencion.nombre_guia,
@@ -2150,6 +2398,7 @@ const payloadAtencion = {
           identificacion_usuario: tamizaje.identificacion_usuario,
           nombre_usuario: tamizaje.nombre_usuario || null,
           eps_usuario: tamizaje.eps_usuario || null,
+          comunidad: tamizaje.comunidad || null,
           riesgo_codigo: tamizaje.riesgo_codigo,
           riesgo_nombre: tamizaje.riesgo_nombre,
           descripcion_riesgo: tamizaje.descripcion_riesgo || null,
@@ -2241,6 +2490,7 @@ const payloadAtencion = {
         confirmacion_usuario: confirmacionFinal,
         fecha_atencion: fecha,
         municipio_id: municipio,
+        comunidad: comunidad.trim() || null,
         identificacion_riesgo: riesgo,
         identificacion_guia: guiaObj.identificacion,
         nombre_guia: guiaObj.nombre,
@@ -2295,6 +2545,7 @@ const payloadAtencion = {
         identificacion_usuario: usuarioSeleccionado.identificacion,
         nombre_usuario: usuarioSeleccionado.nombreCompleto || "",
         eps_usuario: usuarioSeleccionado.eps || "",
+        comunidad: comunidadGestion.trim() || null,
         riesgo_codigo: riesgoGestionConfig.id,
         riesgo_nombre: riesgoGestionConfig.nombre,
         descripcion_riesgo: riesgoGestionConfig.descripcion,
@@ -2325,8 +2576,27 @@ const payloadAtencion = {
         mensaje_error_sync: null,
       });
 
+      const tamizajeGuardado = {
+        uuid_local: uuidLocal,
+        identificacion_usuario: usuarioSeleccionado.identificacion,
+        nombre_usuario: usuarioSeleccionado.nombreCompleto || "",
+        eps_usuario: usuarioSeleccionado.eps || "",
+        comunidad: comunidadGestion.trim() || null,
+        riesgo_nombre: riesgoGestionConfig.nombre,
+        clasificacion: resultadoGestionRiesgo.clasificacion,
+        detalle_resultado: resultadoGestionRiesgo.detalle,
+        observaciones: datosGestionRiesgo.observaciones || "",
+        latitud: latitudGestion || null,
+        longitud: longitudGestion || null,
+        fecha_tamizaje: new Date().toISOString(),
+      };
+
       await cargarTamizajesGestionRiesgo();
-      alert("Tamizaje de gestión de riesgo guardado localmente.");
+      setTamizajeWhatsappPendiente(tamizajeGuardado);
+      if (COORDINADORES_WHATSAPP[0]) {
+        abrirWhatsAppCoordinador(COORDINADORES_WHATSAPP[0], tamizajeGuardado);
+      }
+      alert("Tamizaje guardado localmente. Se abrio WhatsApp para notificar al primer coordinador.");
       limpiarGestionRiesgo();
     } catch (error) {
       console.error("Error guardando tamizaje de gestión de riesgo:", error);
@@ -3313,6 +3583,18 @@ const payloadAtencion = {
                     <div style={{ display: "grid", gap: "6px" }}>
                       <div style={{ ...MUTED_LABEL_STYLE, color: "#c2410c" }}>Descripción del tamizaje</div>
                       <div style={VALUE_TEXT_STYLE}>{riesgoGestionConfig.descripcion}</div>
+                      {riesgoGestionConfig.criterios?.length > 0 && (
+                        <div style={{ display: "grid", gap: "6px", marginTop: "6px" }}>
+                          <div style={{ ...MUTED_LABEL_STYLE, color: "#9a3412" }}>Criterios orientadores</div>
+                          <div style={{ display: "grid", gap: "4px" }}>
+                            {riesgoGestionConfig.criterios.map((criterio, index) => (
+                              <div key={`${riesgoGestionConfig.id}-criterio-${index}`} style={VALUE_TEXT_STYLE}>
+                                {index + 1}. {criterio}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : (
@@ -3320,6 +3602,17 @@ const payloadAtencion = {
                     Elige uno de los riesgos priorizados para habilitar el cuestionario y la interpretación automática.
                   </div>
                 )}
+
+                <label style={FIELD_LABEL_STYLE}>
+                  Comunidad
+                  <input
+                    type="text"
+                    value={comunidadGestion}
+                    onChange={(e) => setComunidadGestion(e.target.value)}
+                    placeholder="Escribe el nombre de la comunidad"
+                    style={WHITE_INPUT_STYLE}
+                  />
+                </label>
               </div>
             </div>
 
@@ -3519,7 +3812,7 @@ const payloadAtencion = {
                   >
                     <div style={SECTION_TITLE_STYLE}>Resultado orientador del tamizaje</div>
                     <div style={SECTION_SUBTITLE_STYLE}>
-                      La app marca posible captación cuando se supera el 50% del cuestionario o cuando la medición clínica lo sugiera.
+                      La orientación combina signos críticos, síntomas asociados y mediciones clínicas según el riesgo seleccionado.
                     </div>
                   </div>
 
@@ -3603,8 +3896,77 @@ const payloadAtencion = {
                       .
                     </div>
                   </div>
+
                 </div>
               </>
+            )}
+
+            {tamizajeWhatsappPendiente && (
+              <div
+                style={{
+                  ...CARD_STYLE,
+                  padding: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    paddingBottom: "8px",
+                    borderBottom: "1px solid #e5e7eb",
+                    marginBottom: "6px",
+                  }}
+                >
+                  <div style={SECTION_TITLE_STYLE}>WhatsApp coordinadores</div>
+                  <div style={SECTION_SUBTITLE_STYLE}>
+                    El ultimo tamizaje guardado quedo listo para enviarse desde el WhatsApp del telefono.
+                  </div>
+                </div>
+
+                <div
+                  style={{
+                    ...SOFT_PANEL_STYLE,
+                    display: "grid",
+                    gap: "10px",
+                    background: "linear-gradient(180deg, #ecfeff 0%, #f8fafc 100%)",
+                    border: "1px solid #99f6e4",
+                  }}
+                >
+                  <div style={VALUE_TEXT_STYLE}>
+                    {tamizajeWhatsappPendiente.nombre_usuario || tamizajeWhatsappPendiente.identificacion_usuario}
+                  </div>
+
+                  <div style={{ display: "grid", gap: "8px" }}>
+                    {COORDINADORES_WHATSAPP.map((coordinador) => (
+                      <button
+                        key={`whatsapp-${coordinador.telefono}`}
+                        type="button"
+                        onClick={() => abrirWhatsAppCoordinador(coordinador, tamizajeWhatsappPendiente)}
+                        style={{
+                          ...PRIMARY_BUTTON_STYLE,
+                          minHeight: "44px",
+                          background: "linear-gradient(135deg, #0f766e 0%, #16a34a 100%)",
+                          boxShadow: "0 10px 18px rgba(22,163,74,0.22)",
+                        }}
+                      >
+                        {coordinador.nombre} · {coordinador.telefono}
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => copiarMensajeWhatsAppTamizaje(tamizajeWhatsappPendiente)}
+                    style={{
+                      ...SURFACE_BUTTON_STYLE,
+                      minHeight: "42px",
+                      background: "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
+                      border: "1px solid #cbd5e1",
+                      color: "#0f172a",
+                    }}
+                  >
+                    Copiar mensaje
+                  </button>
+                </div>
+              </div>
             )}
           </>
         )}
@@ -3735,140 +4097,17 @@ const payloadAtencion = {
                   marginBottom: "6px",
                 }}
               >
-                <div style={SECTION_TITLE_STYLE}>Mapa de usuarios georreferenciados</div>
+                <div style={SECTION_TITLE_STYLE}>Mapa del usuario buscado</div>
                 <div style={SECTION_SUBTITLE_STYLE}>
-                  Se muestran en el mapa los puntos de los usuarios captados en seguimiento de riesgo.
+                  Busca un usuario en los filtros y aquí verás sus ubicaciones registradas en los tamizajes de seguimiento.
                 </div>
               </div>
 
-              {tamizajeMapaActivo ? (
-                <div style={{ display: "grid", gap: "12px" }}>
-                  <div
-                    style={{
-                      position: "relative",
-                      borderRadius: "16px",
-                      overflow: "hidden",
-                      border: "1px solid #dbe4f0",
-                      backgroundColor: "#ffffff",
-                    }}
-                  >
-                    <iframe
-                      title="Mapa de seguimientos"
-                      src={
-                        tamizajeMapaBounds
-                          ? `https://www.openstreetmap.org/export/embed.html?bbox=${tamizajeMapaBounds.minLon}%2C${tamizajeMapaBounds.minLat}%2C${tamizajeMapaBounds.maxLon}%2C${tamizajeMapaBounds.maxLat}&layer=mapnik&marker=${tamizajeMapaActivo.latitud}%2C${tamizajeMapaActivo.longitud}`
-                          : `https://www.openstreetmap.org/export/embed.html?bbox=${Number(tamizajeMapaActivo.longitud) - 0.01}%2C${Number(tamizajeMapaActivo.latitud) - 0.01}%2C${Number(tamizajeMapaActivo.longitud) + 0.01}%2C${Number(tamizajeMapaActivo.latitud) + 0.01}&layer=mapnik&marker=${tamizajeMapaActivo.latitud}%2C${tamizajeMapaActivo.longitud}`
-                      }
-                      style={{
-                        width: "100%",
-                        height: "280px",
-                        border: "0",
-                        display: "block",
-                      }}
-                      loading="lazy"
-                    />
-
-                    {tamizajeMapaBounds && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          pointerEvents: "none",
-                        }}
-                      >
-                        {tamizajesSeguimientoConUbicacion.map((item) => {
-                          const top =
-                            ((tamizajeMapaBounds.maxLat - Number(item.latitud)) /
-                              (tamizajeMapaBounds.maxLat - tamizajeMapaBounds.minLat || 1)) *
-                            100;
-                          const left =
-                            ((Number(item.longitud) - tamizajeMapaBounds.minLon) /
-                              (tamizajeMapaBounds.maxLon - tamizajeMapaBounds.minLon || 1)) *
-                            100;
-                          const esActivo = item.uuid_local === tamizajeMapaActivo?.uuid_local;
-
-                          return (
-                            <button
-                              key={`seguimiento-overlay-${item.uuid_local}`}
-                              type="button"
-                              onClick={() => setTamizajeMapaSeleccionado(item)}
-                              title={
-                                item.nombre_usuario
-                                  ? `${item.nombre_usuario} (${item.identificacion_usuario})`
-                                  : item.identificacion_usuario
-                              }
-                              style={{
-                                position: "absolute",
-                                top: `${Math.min(Math.max(top, 4), 96)}%`,
-                                left: `${Math.min(Math.max(left, 4), 96)}%`,
-                                transform: "translate(-50%, -50%)",
-                                width: esActivo ? "18px" : "13px",
-                                height: esActivo ? "18px" : "13px",
-                                borderRadius: "999px",
-                                border: esActivo ? "2px solid #ffffff" : "1px solid rgba(255,255,255,0.92)",
-                                background: esActivo
-                                  ? "linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)"
-                                  : "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)",
-                                boxShadow: esActivo
-                                  ? "0 0 0 5px rgba(220,38,38,0.18), 0 8px 14px rgba(15,23,42,0.22)"
-                                  : "0 0 0 3px rgba(37,99,235,0.14), 0 6px 10px rgba(15,23,42,0.16)",
-                                pointerEvents: "auto",
-                                cursor: "pointer",
-                              }}
-                            />
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ ...SOFT_PANEL_STYLE, display: "grid", gap: "8px" }}>
-                    <div>
-                      <div style={MUTED_LABEL_STYLE}>Usuario</div>
-                      <div style={VALUE_TEXT_STYLE}>
-                        {tamizajeMapaActivo.nombre_usuario
-                          ? `${tamizajeMapaActivo.nombre_usuario} (${tamizajeMapaActivo.identificacion_usuario})`
-                          : tamizajeMapaActivo.identificacion_usuario}
-                      </div>
-                    </div>
-                    <div>
-                      <div style={MUTED_LABEL_STYLE}>Riesgo</div>
-                      <div style={VALUE_TEXT_STYLE}>{tamizajeMapaActivo.riesgo_nombre}</div>
-                    </div>
-                    <div>
-                      <div style={MUTED_LABEL_STYLE}>Ubicación</div>
-                      <div style={VALUE_TEXT_STYLE}>
-                        {tamizajeMapaActivo.latitud}, {tamizajeMapaActivo.longitud}
-                      </div>
-                    </div>
-                    <div>
-                      <div style={MUTED_LABEL_STYLE}>Total de puntos</div>
-                      <div style={VALUE_TEXT_STYLE}>{tamizajesSeguimientoConUbicacion.length}</div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
+              {!filtroSeguimientoUsuario.trim() ? (
                 <div style={INFO_TEXT_STYLE}>
-                  No hay tamizajes con ubicación capturada para mostrar en el mapa con los filtros actuales.
+                  Escribe el nombre o la identificación del usuario en `Buscar por usuario` para mostrar su ubicación en el mapa.
                 </div>
-              )}
-            </div>
-
-            <div style={{ ...CARD_STYLE, padding: "16px" }}>
-              <div
-                style={{
-                  paddingBottom: "8px",
-                  borderBottom: "1px solid #e5e7eb",
-                  marginBottom: "6px",
-                }}
-              >
-                <div style={SECTION_TITLE_STYLE}>Mapa de seguimientos con ubicación</div>
-                <div style={SECTION_SUBTITLE_STYLE}>
-                  Visualiza los puntos capturados en los tamizajes y selecciona cada caso directamente desde el mapa.
-                </div>
-              </div>
-
-              {tamizajeMapaActivo ? (
+              ) : tamizajeMapaActivo ? (
                 <div style={{ display: "grid", gap: "12px" }}>
                   <div
                     style={{
@@ -3880,7 +4119,7 @@ const payloadAtencion = {
                     }}
                   >
                     <iframe
-                      title="Mapa de seguimientos de riesgo"
+                      title="Mapa del usuario en seguimiento de riesgo"
                       src={
                         tamizajeMapaBounds
                           ? `https://www.openstreetmap.org/export/embed.html?bbox=${tamizajeMapaBounds.minLon}%2C${tamizajeMapaBounds.minLat}%2C${tamizajeMapaBounds.maxLon}%2C${tamizajeMapaBounds.maxLat}&layer=mapnik&marker=${tamizajeMapaActivo.latitud}%2C${tamizajeMapaActivo.longitud}`
@@ -3898,7 +4137,7 @@ const payloadAtencion = {
                           pointerEvents: "none",
                         }}
                       >
-                        {tamizajesSeguimientoConUbicacion.map((item) => {
+                        {tamizajesUsuarioBuscadoConUbicacion.map((item) => {
                           const top =
                             ((tamizajeMapaBounds.maxLat - Number(item.latitud)) /
                               (tamizajeMapaBounds.maxLat - tamizajeMapaBounds.minLat || 1)) *
@@ -3911,7 +4150,7 @@ const payloadAtencion = {
 
                           return (
                             <button
-                              key={`tamizaje-overlay-${item.uuid_local}`}
+                              key={`tamizaje-usuario-overlay-${item.uuid_local}`}
                               type="button"
                               onClick={() => setTamizajeMapaSeleccionado(item)}
                               title={
@@ -3953,6 +4192,12 @@ const payloadAtencion = {
                           : tamizajeMapaActivo.identificacion_usuario}
                       </div>
                     </div>
+                    {tamizajeMapaActivo.comunidad && (
+                      <div>
+                        <div style={MUTED_LABEL_STYLE}>Comunidad</div>
+                        <div style={VALUE_TEXT_STYLE}>{tamizajeMapaActivo.comunidad}</div>
+                      </div>
+                    )}
                     <div>
                       <div style={MUTED_LABEL_STYLE}>Riesgo</div>
                       <div style={VALUE_TEXT_STYLE}>{tamizajeMapaActivo.riesgo_nombre}</div>
@@ -3964,14 +4209,50 @@ const payloadAtencion = {
                       </div>
                     </div>
                     <div>
-                      <div style={MUTED_LABEL_STYLE}>Puntos visibles en el mapa</div>
-                      <div style={VALUE_TEXT_STYLE}>{tamizajesSeguimientoConUbicacion.length}</div>
+                      <div style={MUTED_LABEL_STYLE}>Ubicaciones del usuario</div>
+                      <div style={VALUE_TEXT_STYLE}>{tamizajesUsuarioBuscadoConUbicacion.length}</div>
                     </div>
                   </div>
+
+                  {tamizajesUsuarioBuscadoConUbicacion.length > 1 && (
+                    <div style={{ display: "grid", gap: "8px" }}>
+                      {tamizajesUsuarioBuscadoConUbicacion.map((item) => {
+                        const esActivo = item.uuid_local === tamizajeMapaActivo?.uuid_local;
+
+                        return (
+                          <button
+                            key={`seleccion-mapa-usuario-${item.uuid_local}`}
+                            type="button"
+                            onClick={() => setTamizajeMapaSeleccionado(item)}
+                            style={{
+                              ...SURFACE_BUTTON_STYLE,
+                              minHeight: "auto",
+                              textAlign: "left",
+                              background: esActivo
+                                ? "linear-gradient(180deg, #dbeafe 0%, #eff6ff 100%)"
+                                : "linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)",
+                              border: esActivo ? "1px solid #93c5fd" : "1px solid #d6deea",
+                              color: "#0f172a",
+                            }}
+                          >
+                            <strong style={{ display: "block", marginBottom: "4px" }}>
+                              {item.riesgo_nombre || "Tamizaje"}
+                            </strong>
+                            <span style={{ display: "block" }}>
+                              {item.fecha_tamizaje ? new Date(item.fecha_tamizaje).toLocaleString() : "Sin fecha"}
+                            </span>
+                            <span style={{ display: "block", marginTop: "2px" }}>
+                              {item.latitud}, {item.longitud}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div style={INFO_TEXT_STYLE}>
-                  No hay tamizajes con ubicación capturada para mostrar en el mapa con los filtros actuales.
+                  No se encontraron ubicaciones capturadas para el usuario buscado con los filtros actuales.
                 </div>
               )}
             </div>
@@ -4059,6 +4340,13 @@ const payloadAtencion = {
                             {ESTADOS_SEGUIMIENTO.find((estado) => estado.codigo === (item.estado_seguimiento || "pendiente_gestion"))?.nombre || "Pendiente de gestión"}
                           </div>
                         </div>
+
+                        {item.comunidad && (
+                          <div>
+                            <div style={MUTED_LABEL_STYLE}>Comunidad</div>
+                            <div style={VALUE_TEXT_STYLE}>{item.comunidad}</div>
+                          </div>
+                        )}
 
                         {item.fecha_ultima_gestion && (
                           <div>
@@ -4395,6 +4683,11 @@ const payloadAtencion = {
                             <div style={{ fontSize: "14px", fontWeight: "bold", color: "#0f172a" }}>
                               {item.nombre_usuario || item.identificacion_usuario}
                             </div>
+                            {item.comunidad && (
+                              <div style={{ fontSize: "12px", color: "#475569", marginTop: "4px" }}>
+                                Comunidad: {item.comunidad}
+                              </div>
+                            )}
                             <div style={{ fontSize: "12px", color: "#475569", marginTop: "4px" }}>
                               {item.riesgo_nombre} · {item.clasificacion || "Sin clasificación"}
                             </div>
@@ -5043,6 +5336,17 @@ const payloadAtencion = {
           </label>
 
           <label style={FIELD_LABEL_STYLE}>
+            Comunidad
+            <input
+              type="text"
+              value={comunidad}
+              onChange={(e) => setComunidad(e.target.value)}
+              placeholder="Escribe el nombre de la comunidad"
+              style={INPUT_STYLE}
+            />
+          </label>
+
+          <label style={FIELD_LABEL_STYLE}>
             Riesgo observado
             <select
               value={riesgo}
@@ -5507,6 +5811,12 @@ const payloadAtencion = {
                       </div>
 
                       <div style={{ display: "grid", gap: "6px" }}>
+                        {a.comunidad && (
+                          <div>
+                            <div style={MUTED_LABEL_STYLE}>Comunidad</div>
+                            <div style={VALUE_TEXT_STYLE}>{a.comunidad}</div>
+                          </div>
+                        )}
                         {a.eps_usuario && (
                           <div>
                             <div style={MUTED_LABEL_STYLE}>EPS</div>
@@ -5573,6 +5883,12 @@ const payloadAtencion = {
                             <div>
                               <div style={MUTED_LABEL_STYLE}>EPS</div>
                               <div style={VALUE_TEXT_STYLE}>{a.eps_usuario}</div>
+                            </div>
+                          )}
+                          {a.comunidad && (
+                            <div>
+                              <div style={MUTED_LABEL_STYLE}>Comunidad</div>
+                              <div style={VALUE_TEXT_STYLE}>{a.comunidad}</div>
                             </div>
                           )}
                           {a.ubicacion_capturada === 1 && (
