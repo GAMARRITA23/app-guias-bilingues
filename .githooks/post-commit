@@ -1,0 +1,25 @@
+#!/bin/sh
+
+branch="$(git rev-parse --abbrev-ref HEAD)"
+
+if [ "$branch" = "HEAD" ]; then
+  echo "Auto-push omitido: HEAD separado."
+  exit 0
+fi
+
+upstream="$(git rev-parse --abbrev-ref --symbolic-full-name "@{u}" 2>/dev/null)"
+
+if [ -z "$upstream" ]; then
+  echo "Auto-push omitido: la rama $branch no tiene upstream configurado."
+  exit 0
+fi
+
+echo "Auto-push a $upstream..."
+git push
+status=$?
+
+if [ "$status" -ne 0 ]; then
+  echo "Auto-push fallo. Puedes subir manualmente con: git push"
+fi
+
+exit 0

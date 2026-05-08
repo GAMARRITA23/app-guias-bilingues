@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "sync": "git pull --ff-only origin main",
+    "setup:git-hooks": "sh scripts/setup-git-hooks.sh",
     "predev": "npm run sync",
     "dev": "vite",
     "preview:host": "vite preview --host",
