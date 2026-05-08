@@ -1033,6 +1033,24 @@ const riesgosGestion = [
       "¿Ha notado hinchazón marcada, dolor abdominal intenso o disminución de movimientos fetales?",
     ],
   },
+  {
+    id: "otros_riesgos",
+    nombre: "OTROS RIESGOS",
+    descripcion: "Registro comunitario para eventos de riesgo no incluidos en las opciones priorizadas.",
+    tipo: "cuestionario",
+    criterios: [
+      "Orienta captación si se identifican tres o más hallazgos relevantes.",
+      "Permite documentar riesgos no clasificados para seguimiento comunitario y validación por el equipo de salud.",
+    ],
+    preguntas: [
+      "¿La persona presenta signos o síntomas que requieren valoración por el equipo de salud?",
+      "¿El hallazgo representa una barrera o amenaza para el bienestar de la persona o su familia?",
+      "¿El riesgo identificado ha empeorado o se repite con frecuencia?",
+      "¿Existe dificultad para acceder oportunamente a consulta, medicamentos o atención requerida?",
+      "¿La familia o cuidador manifiesta preocupación importante por la situación identificada?",
+      "¿Se requiere activar ruta, remitir o dejar seguimiento comunitario prioritario?",
+    ],
+  },
 ];
 
 function evaluarTamizajeGestionRiesgo(config, respuestas, datosMedicion) {
