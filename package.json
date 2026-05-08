@@ -4,6 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "sync": "git pull --ff-only origin main",
+    "predev": "npm run sync",
     "dev": "vite",
     "preview:host": "vite preview --host",
     "build": "vite build",
